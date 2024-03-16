@@ -7,5 +7,7 @@ import com.message.project.entity.Message;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Integer>  {
+	
+	int findByMessageid(String date,String author,String message,String attachment,String signature);
 
 }

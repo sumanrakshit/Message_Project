@@ -35,7 +35,7 @@ public class ProjectApplication implements CommandLineRunner{
 	        String[] arguments = Arrays.copyOfRange(args, 1, args.length);
 	        switch (command) {
 	            case "post":
-	                postMessage(args);
+	               messageService.postMessage(null);
 	                break;
 	            case "list":
 	            	
@@ -67,8 +67,8 @@ public class ProjectApplication implements CommandLineRunner{
 	            	
 //	                listMessages(args);
 //	                break;
-	            case "create":
-	                createId();
+	            case "createID":
+	               messageService.createId() ;
 	                break;
 	            default:
 	                System.out.println("Unknown command: " + command);

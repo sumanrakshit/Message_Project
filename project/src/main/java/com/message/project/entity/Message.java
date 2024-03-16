@@ -17,19 +17,19 @@ import lombok.Setter;
 public class Message {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int message_id;
+	private int messageid;
 	
 	private String date;
 	private String author;
 	private String message;
 	private String attachment;
 	private String signature;
-	public int getMessage_id() {
-		return message_id;
-	}
-	public void setMessage_id(int message_id) {
-		this.message_id = message_id;
-	}
+//	public int getMessage_id() {
+//		return message_id;
+//	}
+//	public void setMessage_id(int message_id) {
+//		this.message_id = message_id;
+//	}
 	public String getDate() {
 		return date;
 	}
@@ -60,24 +60,40 @@ public class Message {
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
-	public Message(int message_id, String date, String author, String message, String attachment, String signature) {
+//	public Message(int message_id, String date, String author, String message, String attachment, String signature) {
+//		super();
+//		this.message_id = message_id;
+//		this.date = date;
+//		this.author = author;
+//		this.message = message;
+//		this.attachment = attachment;
+//		this.signature = signature;
+//	}
+	public Message() {
 		super();
-		this.message_id = message_id;
+		// TODO Auto-generated constructor stub
+	}
+	public int getMessageid() {
+		return messageid;
+	}
+	public void setMessageid(int messageid) {
+		this.messageid = messageid;
+	}
+	public Message(int messageid, String date, String author, String message, String attachment, String signature) {
+		super();
+		this.messageid = messageid;
 		this.date = date;
 		this.author = author;
 		this.message = message;
 		this.attachment = attachment;
 		this.signature = signature;
 	}
-	public Message() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 	@Override
 	public String toString() {
-		return "Message [message_id=" + message_id + ", date=" + date + ", author=" + author + ", message=" + message
+		return "Message [messageid=" + messageid + ", date=" + date + ", author=" + author + ", message=" + message
 				+ ", attachment=" + attachment + ", signature=" + signature + "]";
 	}
+
 	
 	
 	

@@ -39,15 +39,20 @@ import org.springframework.stereotype.Service;
 import com.message.project.entity.ErrorResponse;
 import com.message.project.entity.Key;
 import com.message.project.entity.Message;
+import com.message.project.entity.MessageResponse;
 import com.message.project.entity.MessagerRequest;
+import com.message.project.entity.User;
+import com.message.project.entity.UserResponse;
 import com.message.project.repository.MessageRepository;
+import com.message.project.repository.UserRepository;
 import com.message.project.service.MessageService;
 
 @Service
 public class MesssageServiceImpl implements MessageService {
 	
 	
-	
+	@Autowired
+	private UserRepository userRepository;
 	
 	 
 	
@@ -55,9 +60,13 @@ public class MesssageServiceImpl implements MessageService {
 	private MessageRepository messageRepository;
 
 	@Override
-	public int postMessage(MessagerRequest messagerRequest) {
+	public MessageResponse postMessage(MessagerRequest messagerRequest) {
 		// TODO Auto-generated method stub
-		return 0;
+		int id=messageRepository.findByMessageid(messagerRequest.getDate(), messagerRequest.getAuthor(), messagerRequest.getMessage(),messagerRequest.getAttachment(), messagerRequest.getSignature());
+		MessageResponse messageResponse=new MessageResponse();
+		messageResponse.setMessage_id(id);
+		
+		return  messageResponse;
 	}
 
 	@Override
@@ -67,28 +76,41 @@ public class MesssageServiceImpl implements MessageService {
 	}
 
 	@Override
-	public String createUser(String username, String key) {
+	public UserResponse createUser(String username, String key) {
 		// TODO Auto-generated method stub
-		return null;
+		String RSA_PRIVATE_KEY =
+	            "-----BEGIN PRIVATE KEY-----\n" +
+	            		key +
+	           
+	            "...\n" +
+	            "-----END PRIVATE KEY-----";
+		
+		User usr=new User();
+		usr.setUsername(username);
+		usr.setPublickey(RSA_PRIVATE_KEY);
+		userRepository.save(usr);
+		
+		String str="Welcome";
+UserResponse userResponse=new UserResponse();
+userResponse.setMessage(str);
+		
+		return  userResponse;
 	}
 
-	@Override
-	public Key CreateKey() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public Key CreateKey() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
-	public String generateKey(String username, String key) {
-		// TODO Auto-generated method stub
-		return null;
+	public String generateKey(String username) {
+		String key=userRepository.findByPublickey(username).getPublickey();
+		return key;
 	}
 
 	@Override
 	public Message createMessage(MessagerRequest messagerRequest) {
-		// TODO Auto-generated method stub
-		
-		
 		 try {
 			 Message mess=new Message();
 			 mess.setDate(dateTime());
@@ -232,6 +254,12 @@ public class MesssageServiceImpl implements MessageService {
         String formattedDate = zonedDateTime.format(formatter);
         return formattedDate;
 	}
+
+//	@Override
+//	public Key CreateKey() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 	
 	
 
