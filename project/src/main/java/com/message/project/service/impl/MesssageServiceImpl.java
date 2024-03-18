@@ -54,19 +54,19 @@ public class MesssageServiceImpl implements MessageService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	 
 	
 	@Autowired
 	private MessageRepository messageRepository;
 
 	@Override
 	public MessageResponse postMessage(MessagerRequest messagerRequest) {
-		// TODO Auto-generated method stub
-		int id=messageRepository.findByMessageid(messagerRequest.getDate(), messagerRequest.getAuthor(), messagerRequest.getMessage(),messagerRequest.getAttachment(), messagerRequest.getSignature());
+//		// TODO Auto-generated method stub
+		//int id=messageRepository.findByMessageid(messagerRequest.getDate(), messagerRequest.getAuthor(), messagerRequest.getMessage(),messagerRequest.getAttachment(), messagerRequest.getSignature());
 		MessageResponse messageResponse=new MessageResponse();
-		messageResponse.setMessage_id(id);
+		//messageResponse.setMessage_id(id);
 		
-		return  messageResponse;
+		//return  messageResponse;
+		return null;
 	}
 
 	@Override

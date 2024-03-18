@@ -3,6 +3,7 @@ package com.message.project.service;
 import java.security.NoSuchAlgorithmException;
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.message.project.entity.Key;
 import com.message.project.entity.Message;
@@ -10,7 +11,7 @@ import com.message.project.entity.MessageResponse;
 import com.message.project.entity.MessagerRequest;
 import com.message.project.entity.UserResponse;
 
-@Component
+@Repository
 public interface MessageService {
 	
 	public Message createMessage(MessagerRequest messagerRequest);
@@ -21,6 +22,8 @@ public interface MessageService {
 //	public Key CreateKey();
 	 public String createId() throws NoSuchAlgorithmException ;
 	public String generateKey(String username);
+	public String dateTime();
+	public  String signMessage(String date, String author, String message, String attachment) throws NoSuchAlgorithmException ;
 	
 	
 
