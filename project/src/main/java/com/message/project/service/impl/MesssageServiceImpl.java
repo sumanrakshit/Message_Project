@@ -32,6 +32,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,9 +71,18 @@ public class MesssageServiceImpl implements MessageService {
 	}
 
 	@Override
-	public Message listMessage(int limit, int next) {
+	public List<Message> listMessage(int limit, int next) {
 		// TODO Auto-generated method stub
-		return null;
+		List<Message> messages=messageRepository.findAll();
+		int count = 0;
+		for (int i = messages.size() - 1; i >= 0 && count < limit; i--) {
+			Message message = messages.get(i);
+			if (message.getMessageid() <= next || next == -1) {
+				messages.add(message);
+				count++;
+			}
+		}
+		return messages;
 	}
 
 	@Override

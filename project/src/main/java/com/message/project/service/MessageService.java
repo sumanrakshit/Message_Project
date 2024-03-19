@@ -1,6 +1,7 @@
 package com.message.project.service;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,7 @@ public interface MessageService {
 	public Message createMessage(MessagerRequest messagerRequest);
 	public MessageResponse postMessage(MessagerRequest messagerRequest);
 	
-	public Message listMessage(int limit, int next);
+	public List<Message> listMessage(int limit, int next);
 	public UserResponse createUser(String username, String key);
 //	public Key CreateKey();
 	 public String createId() throws NoSuchAlgorithmException ;
