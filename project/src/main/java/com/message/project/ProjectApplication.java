@@ -19,6 +19,9 @@ import java.security.NoSuchAlgorithmException;
 
 import com.message.project.entity.MessagerRequest;
 import com.message.project.service.MessageService;
+
+import antlr.collections.List;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 @SpringBootApplication
@@ -114,19 +117,8 @@ public class ProjectApplication implements CommandLineRunner{
 	                        messagerRequest.setDate("2024-03-13T19:38-07:00");
 	                        messagerRequest.setAuthor("ben");
 	                        messagerRequest.setMessage(message);
-	                        messagerRequest.setSignature("");
-//	                        JSONObject jsonObject = new JSONObject();
-//	                        jsonObject.put("date", "2024-03-13T19:38-07:00");
-//	                        jsonObject.put("author", "ben");
-//	                        jsonObject.put("message", message);
-	                        
-	                        
-	                        
-	                        if (fileToAttach != null) {
-	                            // Read file and encode it to base64
-	                           
-	                        }
-
+	                        messagerRequest.setSignature("as/f32230FS+");
+//	
 	                        if (fileToAttach != null && !fileToAttach.isEmpty()) {
 	                            try {
 	                            	 byte[] fileBytes = Files.readAllBytes(Paths.get(fileToAttach));
@@ -147,27 +139,30 @@ public class ProjectApplication implements CommandLineRunner{
 	                break;
 	            case "list":
 	            	
-	            	 int startingId = -1;
-	                 int count = 10;
-	                 boolean saveAttachment = false;
+	            	
+	            	
+	            	
+	            	String startingId = null;
+	                int count = 10;
+	                boolean saveAttachment = false;
 
-	                 for (int i = 0; i < arguments.length; i++) {
-	                     switch (arguments[i].toLowerCase()) {
-	                         case "--starting":
-	                             startingId = Integer.parseInt(arguments[++i]);
-	                             break;
-	                         case "--count":
-	                             count = Integer.parseInt(arguments[++i]);
-	                             break;
-	                         case "--save-attachment":
-	                             saveAttachment = true;
-	                             break;
-	                         default:
-	                             System.out.println("Unknown argument: " + arguments[i]);
-	                             return;
-	                     }
-	                 }
-	                 //messageService.listMessage(startingId, count);
+	                // Parse command line options
+	                for (int i = 1; i < args.length; i++) {
+	                    if (args[i].equals("--starting") && i + 1 < args.length) {
+	                        startingId = args[i + 1];
+	                        i++; // Skip next argument (starting ID)
+	                    } else if (args[i].equals("--count") && i + 1 < args.length) {
+	                        count = Integer.parseInt(args[i + 1]);
+	                        i++; // Skip next argument (count)
+	                    } else if (args[i].equals("--save-attachment")) {
+	                        saveAttachment = true;
+	                    }
+	                }
+	            	
+	            	
+	             messageService.allMessage( startingId, count, saveAttachment);
+	            	
+	            	
 	                 break;
 	            	
 	            	

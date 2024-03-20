@@ -137,6 +137,8 @@ public class MesssageServiceImpl implements MessageService {
 		}
 		return messages;
 	}
+	
+	
 
 	@Override
 	public UserResponse createUser(String username, String key) {
@@ -361,5 +363,57 @@ userResponse.setMessage(str);
 		return publicKeyStr;
     }
 	
+	public List<Message> allMessage(String startingId,int count, boolean saveAttch)
+	{
+		List<Message> messages=messageRepository.findAll();
+		
+		
+		processMessages(messages, saveAttch);
+		if(startingId==null)
+		{
+			
+		}
+		
+		return messages;
+	}
+	
+	 private void processMessages(List<Message> messages, boolean saveAttch) {
+//	        JSONArray messages = new JSONArray(responseBody);
+	        
+	        for (int i = 0; i < messages.size(); i++) {
+	            Message message = messages.get(i);
+	            saveMessage(message, saveAttch);
+	        }
+	    }
+	
+	 
+	 
+	 private void saveMessage(Message message, boolean saveAttch) {
+	        int messageId = message.getMessageid();
+	        String attachment = message.getAttachment();
+
+	        // Save attachment if present
+	        if (saveAttch==true) {
+	            saveAttachment(messageId, attachment);
+	        }
+
+	        // Print message details (as per the specified format)
+	        String author = message.getAuthor();
+	        String date = message.getDate();
+	        String messageText = message.getMessage();
+	        System.out.println(messageId + ": " + date + " " + author + " says \"" + messageText + "\"");
+	    }
+	 
+	  private void saveAttachment(int messageId, String attachment) {
+	        // Decode attachment from Base64 and save to file
+	        byte[] attachmentData = Base64.getDecoder().decode(attachment);
+	        String filename = messageId + ".out";
+	        try (FileOutputStream outputStream = new FileOutputStream(filename)) {
+	            outputStream.write(attachmentData);
+	            System.out.println("Attachment saved to file: " + filename);
+	        } catch (IOException e) {
+	            System.err.println("Error saving attachment to file: " + e.getMessage());
+	        }
+	    }
 
 }

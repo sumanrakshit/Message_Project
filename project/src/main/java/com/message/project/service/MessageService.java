@@ -26,6 +26,8 @@ public interface MessageService {
 	public String dateTime();
 	public  String signMessage(String date, String author, String message, String attachment) throws NoSuchAlgorithmException ;
 	
+	public List<Message> allMessage(String startingId,int count, boolean saveAttachment);
+	
 	
 
 }
