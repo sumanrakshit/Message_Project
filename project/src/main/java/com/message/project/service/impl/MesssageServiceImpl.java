@@ -37,6 +37,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,6 +79,14 @@ public class MesssageServiceImpl implements MessageService {
 		//messageResponse.setMessage_id(id);
 		
 		//return  messageResponse;
+		
+		/* Decode Attachment */
+//		String attachment=messagerRequest.getAttachment();
+//       byte[] decodedAttachment = Base64.getDecoder().decode(attachment);       
+//       String decodedString = new String(decodedAttachment, StandardCharsets.UTF_8);
+        
+		
+		
 		 String sql = "SELECT messageid FROM message WHERE date = ? AND author = ? AND message = ? AND attachment = ? AND signature = ?";
 
 		
@@ -189,7 +198,7 @@ userResponse.setMessage(str);
 		
 	}
 	
-	 public String createId() throws NoSuchAlgorithmException  {
+	 public String createId(String id ) throws NoSuchAlgorithmException  {
 	        // Generate public-private key pair
 	        try {
 	            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -203,7 +212,8 @@ userResponse.setMessage(str);
 	            
 
 	            // Save keys to file
-	            saveKeysToFile(keyPair);
+//	            saveKeysToFile(keyPair);
+	            saveToIniFile("mb.ini", keyPair,id );
 	            System.out.println("Keys generated and saved successfully.");
 	            
 	            
@@ -214,15 +224,30 @@ userResponse.setMessage(str);
 	        }
 	    }
 	 
-	  public void saveKeysToFile(KeyPair keyPair) throws IOException {
-	        // Save private key
-	        try (OutputStream privateKeyOut = new FileOutputStream("public.key")) {
-	            System.out.println(privateKeyOut);
-	        	privateKeyOut.write(keyPair.getPrivate().getEncoded());
-	        }
+//	  public void saveKeysToFile(KeyPair keyPair) throws IOException {
+//	        // Save private key
+//	        try (OutputStream privateKeyOut = new FileOutputStream("mb.ini")) {
+//	            System.out.println(privateKeyOut);
+//	        	privateKeyOut.write(keyPair.getPrivate().getEncoded());
+//	        }
+//
+//	        // Save public key
+//	        try (OutputStream publicKeyOut = new FileOutputStream("public.key")) {
+//	            publicKeyOut.write(keyPair.getPublic().getEncoded());
+//	        }
+//	    }
+	  
+	  
+	  private static void saveToIniFile(String fileName, KeyPair keyPair, String id) throws IOException {
+	        Properties properties = new Properties();
+	        properties.setProperty("id", id); // Replace "your_id_here" with the actual ID
+	        properties.setProperty("privateKey", Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded()));
 
+	        try (FileOutputStream fos = new FileOutputStream(fileName)) {
+	            properties.store(fos, "MB configuration");
+	        }
 	        // Save public key
-	        try (OutputStream publicKeyOut = new FileOutputStream("mb.ini")) {
+	        try (OutputStream publicKeyOut = new FileOutputStream("public.key")) {
 	            publicKeyOut.write(keyPair.getPublic().getEncoded());
 	        }
 	    }
@@ -257,11 +282,11 @@ userResponse.setMessage(str);
 	
 	 public  String signMessage(String date, String author, String message, String attachment) throws NoSuchAlgorithmException {
 		 String RSA_PRIVATE_KEY =
-		            "-----BEGIN PRIVATE KEY-----\n" +
-		            		createId()+
+		            "-----BEGIN PUBLIC KEY-----\n" +
+		            		createKey( )+
 		           
 		            "...\n" +
-		            "-----END PRIVATE KEY-----";
+		            "-----END PUBLIC KEY-----";
 	        try {
 	            // Concatenate message fields into JSON format
 	            String jsonData = "{\"date\":\"" + date + "\",\"author\":\"" + author + "\",\"message\":\"" + message + "\",\"attachment\":\"" + attachment + "\"}";
@@ -315,6 +340,26 @@ userResponse.setMessage(str);
 //		return null;
 //	}
 	
+	
+	public String createKey( ) throws NoSuchAlgorithmException  {
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+		keyPairGenerator.initialize(2048);
+		KeyPair keyPair = keyPairGenerator.generateKeyPair();
+		System.out.println(" public Key "+ keyPair.getPublic());
+		System.out.println(" Private Key "+ keyPair.getPrivate());
+		
+		String publicKeyStr = Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded());
+		String privateKeyStr = Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded());
+		
+
+		// Save keys to file
+//            saveKeysToFile(keyPair);
+//            saveToIniFile("mb.ini", keyPair,id );
+//		System.out.println("Keys generated and saved successfully.");
+		
+		
+		return publicKeyStr;
+    }
 	
 
 }

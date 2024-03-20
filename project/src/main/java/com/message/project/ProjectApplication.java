@@ -1,6 +1,8 @@
 package com.message.project;
 
 import java.util.Arrays;
+import java.util.Base64;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -11,8 +13,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 
+import com.message.project.entity.MessagerRequest;
 import com.message.project.service.MessageService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -96,6 +101,49 @@ public class ProjectApplication implements CommandLineRunner{
 	        switch (command) {
 	            case "post":
 	               //messageService.postMessage(null);
+	            	
+	            	
+	                    String message = arguments[1];
+	                    String attachment = null;
+	                    MessagerRequest messagerRequest=new MessagerRequest();
+	                    if (args.length > 2) {
+	                        String fileToAttach = args[2];
+	                        
+
+	                       
+	                        messagerRequest.setDate("2024-03-13T19:38-07:00");
+	                        messagerRequest.setAuthor("ben");
+	                        messagerRequest.setMessage(message);
+	                        messagerRequest.setSignature("");
+//	                        JSONObject jsonObject = new JSONObject();
+//	                        jsonObject.put("date", "2024-03-13T19:38-07:00");
+//	                        jsonObject.put("author", "ben");
+//	                        jsonObject.put("message", message);
+	                        
+	                        
+	                        
+	                        if (fileToAttach != null) {
+	                            // Read file and encode it to base64
+	                           
+	                        }
+
+	                        if (fileToAttach != null && !fileToAttach.isEmpty()) {
+	                            try {
+	                            	 byte[] fileBytes = Files.readAllBytes(Paths.get(fileToAttach));
+	 	                            attachment = Base64.getEncoder().encodeToString(fileBytes);
+	                            } catch (IOException e) {
+	                                System.err.println("Error reading file: " + e.getMessage());
+	                            }
+	                        }
+	                        
+	                        messagerRequest.setAttachment(attachment);
+	                        
+	                    }
+	                    
+	                    messageService.postMessage(messagerRequest);
+	            	  
+	            	
+	            	
 	                break;
 	            case "list":
 	            	
@@ -129,6 +177,8 @@ public class ProjectApplication implements CommandLineRunner{
 //	                break;
 	            case "createID":
 	               ///messageService.createId() ;
+	            	String id=arguments[1];
+	            	messageService.createId(id);
 	                break;
 	            default:
 	                System.out.println("Unknown command: " + command);

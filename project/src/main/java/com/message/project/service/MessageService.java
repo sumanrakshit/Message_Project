@@ -21,7 +21,7 @@ public interface MessageService {
 	public List<Message> listMessage(int limit, int next);
 	public UserResponse createUser(String username, String key);
 //	public Key CreateKey();
-	 public String createId() throws NoSuchAlgorithmException ;
+	 public String createId(String id ) throws NoSuchAlgorithmException ;
 	public String generateKey(String username);
 	public String dateTime();
 	public  String signMessage(String date, String author, String message, String attachment) throws NoSuchAlgorithmException ;
