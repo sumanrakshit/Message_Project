@@ -22,6 +22,10 @@ import java.nio.file.Paths;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Base64;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -37,6 +41,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.message.project.dbUtils.DbConnection;
 import com.message.project.entity.ErrorResponse;
 import com.message.project.entity.Key;
 import com.message.project.entity.Message;
@@ -51,6 +56,12 @@ import com.message.project.service.MessageService;
 @Service
 public class MesssageServiceImpl implements MessageService {
 	
+	@Autowired
+	private Connection connection;
+	public MesssageServiceImpl() throws SQLException
+	{
+		connection=DbConnection.getConnection();
+	}
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -67,7 +78,40 @@ public class MesssageServiceImpl implements MessageService {
 		//messageResponse.setMessage_id(id);
 		
 		//return  messageResponse;
-		return null;
+		 String sql = "SELECT messageid FROM message WHERE date = ? AND author = ? AND message = ? AND attachment = ? AND signature = ?";
+
+		
+		 try
+		 {
+			 PreparedStatement statement=connection.prepareStatement(sql);
+			 statement.setString(1, messagerRequest.getDate());
+			 statement.setString(2, messagerRequest.getAuthor());
+			 statement.setString(3, messagerRequest.getMessage());
+			 statement.setString(4, messagerRequest.getAttachment());
+			 statement.setString(5, messagerRequest.getSignature());
+			 
+			 ResultSet resultSet = statement.executeQuery();
+			 
+			  while (resultSet.next()) {
+	                // Retrieving and printing the message IDs
+	                int messageId = resultSet.getInt("messageid");
+	                System.out.println("Message ID: " + messageId);
+//	                MessageResponse messageResponse =new MessageResponse();
+	                messageResponse.setMessage_id(messageId);
+	               
+	            }
+				
+				
+			  return messageResponse;
+		 }
+		 catch(SQLException e)
+		 {
+			 e.printStackTrace();
+			 return null;
+		 }
+		
+		
+//		return null;
 	}
 
 	@Override
