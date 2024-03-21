@@ -20,8 +20,8 @@ public static Connection getConnection() throws SQLException
 	{
 //		String driver= "com.mysql.cj.jdbc.Driver";
 		String url= "jdbc:mysql://localhost:3306/messagedb";
-		String user="jack";         //Mysql Username
-		String password="root";    //Mysql password
+		String user="root";         //Mysql Username
+		String password="Vivek@2002";    //Mysql password
 		
 		try {
 //			Class.forName(driver);

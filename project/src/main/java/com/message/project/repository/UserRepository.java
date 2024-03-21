@@ -8,5 +8,7 @@ import com.message.project.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 	User findByPublickey(String username);
+	User findByUsername(String username);
+	
 
 }

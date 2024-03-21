@@ -10,16 +10,17 @@ import com.message.project.entity.Key;
 import com.message.project.entity.Message;
 import com.message.project.entity.MessageResponse;
 import com.message.project.entity.MessagerRequest;
+import com.message.project.entity.User;
 import com.message.project.entity.UserResponse;
 
 @Repository
 public interface MessageService {
 	
-	public Message createMessage(MessagerRequest messagerRequest);
+	public String createMessage(MessagerRequest messagerRequest);
 	public MessageResponse postMessage(MessagerRequest messagerRequest);
 	
 	public List<Message> listMessage(int limit, int next);
-	public UserResponse createUser(String username, String key);
+	public UserResponse createUser(User user);
 //	public Key CreateKey();
 	 public String createId(String id ) throws NoSuchAlgorithmException ;
 	public String generateKey(String username);
@@ -28,6 +29,6 @@ public interface MessageService {
 	
 	public List<Message> allMessage(String startingId,int count, boolean saveAttachment);
 	
-	
+	public String createKey( ) throws NoSuchAlgorithmException  ;
 
 }

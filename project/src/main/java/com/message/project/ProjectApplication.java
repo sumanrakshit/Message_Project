@@ -15,9 +15,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 
+import com.message.project.entity.Message;
 import com.message.project.entity.MessagerRequest;
+import com.message.project.repository.MessageRepository;
 import com.message.project.service.MessageService;
 
 import antlr.collections.List;
@@ -28,10 +32,12 @@ import com.google.gson.JsonObject;
 public class ProjectApplication implements CommandLineRunner{
 	@Autowired
 	private static MessageService messageService;
+	@Autowired
+	private MessageRepository messageRepository;
 	
 	public static void main(String[] args) {
-		
-		SpringApplication.run(ProjectApplication.class, args);
+
+				SpringApplication.run(ProjectApplication.class, args);
         
 	}
 	public String JSONSave(String author,String message,String attachment) {
@@ -109,39 +115,49 @@ public class ProjectApplication implements CommandLineRunner{
 	                    String message = arguments[1];
 	                    String attachment = null;
 	                    MessagerRequest messagerRequest=new MessagerRequest();
+	                    
 	                    if (args.length > 2) {
 	                        String fileToAttach = args[2];
 	                        
+<<<<<<< Updated upstream
                         
+=======
+	                        String datetime=messageService.dateTime();
+>>>>>>> Stashed changes
 	                       
-	                        messagerRequest.setDate("2024-03-13T19:38-07:00");
+	                        messagerRequest.setDate(datetime);
 	                        messagerRequest.setAuthor("ben");
 	                        messagerRequest.setMessage(message);
-	                        messagerRequest.setSignature("as/f32230FS+");
+
 //	
 	                        if (fileToAttach != null && !fileToAttach.isEmpty()) {
 	                            try {
 	                            	 byte[] fileBytes = Files.readAllBytes(Paths.get(fileToAttach));
 	 	                            attachment = Base64.getEncoder().encodeToString(fileBytes);
+	 	                           messagerRequest.setAttachment(attachment);
+	 		                        messagerRequest.setSignature(messageService.signMessage(datetime, "ben", message, attachment));
 	                            } catch (IOException e) {
 	                                System.err.println("Error reading file: " + e.getMessage());
 	                            }
 	                        }
+	                        else {
+	                        	messagerRequest.setAttachment("");
+	                        	messagerRequest.setSignature("");
+	                        }
 	                        
-	                        messagerRequest.setAttachment(attachment);
+	                        
+	                        
 	                        
 	                    }
-	                    
-	                    messageService.postMessage(messagerRequest);
-	            	  
+	                 
+	       		        String result=messageService.createMessage(messagerRequest);
+	       		        System.out.println("Response ---   "+result);
 	            	
 	            	
 	                break;
+	                
+	                
 	            case "list":
-	            	
-	            	
-	            	
-	            	
 	            	String startingId = null;
 	                int count = 10;
 	                boolean saveAttachment = false;
@@ -173,8 +189,10 @@ public class ProjectApplication implements CommandLineRunner{
 	            case "createID":
 	               ///messageService.createId() ;
 	            	String id=arguments[1];
-	            	messageService.createId(id);
-	                break;
+	            	String pvtkey=messageService.createId(id);
+	                System.out.println("Private key  result= "+pvtkey);
+	            	break;
+	            	
 	            default:
 	                System.out.println("Unknown command: " + command);
 	        }

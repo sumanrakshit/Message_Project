@@ -1,5 +1,6 @@
 package com.message.project.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,7 +23,9 @@ public class Message {
 	private String date;
 	private String author;
 	private String message;
+	@Column(length = 95555)
 	private String attachment;
+	@Column(length = 65555)
 	private String signature;
 //	public int getMessage_id() {
 //		return message_id;

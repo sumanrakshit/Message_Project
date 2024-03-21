@@ -4,6 +4,7 @@ import com.message.project.entity.ErrorResponse;
 import com.message.project.entity.Message;
 import com.message.project.entity.MessageResponse;
 import com.message.project.entity.MessagerRequest;
+import com.message.project.entity.User;
 import com.message.project.entity.UserResponse;
 import com.message.project.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,26 +36,27 @@ public class MessageController {
         return ResponseEntity.ok(messages);
     }
 
-    @PostMapping("/postmessage")
+    @GetMapping("/postmessage")
     public ResponseEntity<?> postMessage(@RequestBody MessagerRequest messagerRequest)
     {
-        messageService.postMessage(messagerRequest);
+        //messageService.postMessage(messagerRequest);
         return  new ResponseEntity<>( messageService.postMessage(messagerRequest),HttpStatus.CREATED);
 
     }
     
     
     @PostMapping("/createuser")
-    public ResponseEntity<?> createUser(@RequestParam String username, @RequestParam String key)
+    public ResponseEntity<?> createUser(@RequestBody User user)
     {
-    	UserResponse userResponse=messageService.createUser(username, key);
+    	UserResponse userResponse=messageService.createUser(user);
     	return new ResponseEntity<>(userResponse, HttpStatus.ACCEPTED);
     	
     }
     
-    @GetMapping("/getkey")
+    @GetMapping("/getkey/{username}")
     public ResponseEntity<?> getKey(@PathVariable String username)
     {
+    	System.out.println("Hello world");
     	String res=messageService.generateKey(username);
     	return new ResponseEntity<>(res,HttpStatus.ACCEPTED);
     }
