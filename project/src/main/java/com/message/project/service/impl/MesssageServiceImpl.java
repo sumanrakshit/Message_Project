@@ -58,11 +58,7 @@ import com.message.project.service.MessageService;
 @Service
 public class MesssageServiceImpl implements MessageService {
 	
-<<<<<<< Updated upstream
 
-=======
-//	@Autowired
->>>>>>> Stashed changes
 	private Connection connection;
 	public MesssageServiceImpl() throws SQLException
 	{
@@ -155,11 +151,9 @@ public class MesssageServiceImpl implements MessageService {
 	public List<Message> listMessage(int limit, int next) {
 		// TODO Auto-generated method stub
 		List<Message> messages=messageRepository.findAll();
-<<<<<<< Updated upstream
 		List<Message>result=new ArrayList<Message>();
-=======
 		List<Message> messageresponse=new ArrayList<Message>();
->>>>>>> Stashed changes
+
 		int count = 0;
 		for (int i = messages.size() - 1; i >= 0 && count < limit; i--) {
 			Message message = messages.get(i);

@@ -119,11 +119,8 @@ public class ProjectApplication implements CommandLineRunner{
 	                    if (args.length > 2) {
 	                        String fileToAttach = args[2];
 	                        
-<<<<<<< Updated upstream
-                        
-=======
 	                        String datetime=messageService.dateTime();
->>>>>>> Stashed changes
+
 	                       
 	                        messagerRequest.setDate(datetime);
 	                        messagerRequest.setAuthor("ben");
