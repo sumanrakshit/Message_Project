@@ -40,16 +40,16 @@ public class User {
 	public void setPublickey(String publickey) {
 		this.publickey = publickey;
 	}
-	public User(int id, String username, String publickey) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.publickey = publickey;
-	}
-	public User() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+//	public User(int id, String username, String publickey) {
+//		super();
+//		this.id = id;
+//		this.username = username;
+//		this.publickey = publickey;
+//	}
+//	public User() {
+//	
+//		// TODO Auto-generated constructor stub
+//	}
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", publickey=" + publickey + "]";

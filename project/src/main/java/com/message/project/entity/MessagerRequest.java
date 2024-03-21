@@ -37,18 +37,18 @@ public class MessagerRequest {
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
-	public MessagerRequest(String date, String author, String message, String attachment, String signature) {
-		super();
-		this.date = date;
-		this.author = author;
-		this.message = message;
-		this.attachment = attachment;
-		this.signature = signature;
-	}
-	public MessagerRequest() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+//	public MessagerRequest(String date, String author, String message, String attachment, String signature) {
+//		super();
+//		this.date = date;
+//		this.author = author;
+//		this.message = message;
+//		this.attachment = attachment;
+//		this.signature = signature;
+//	}
+//	public MessagerRequest() {
+//
+//		// TODO Auto-generated constructor stub
+//	}
 	
 
 }

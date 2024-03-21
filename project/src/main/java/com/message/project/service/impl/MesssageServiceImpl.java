@@ -239,6 +239,7 @@ public class MesssageServiceImpl implements MessageService {
 	 public String createId(String id ) throws NoSuchAlgorithmException  {
 	        // Generate public-private key pair
 	        try {
+	        	System.out.println("comes");
 	            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
 	            keyPairGenerator.initialize(2048);
 	            KeyPair keyPair = keyPairGenerator.generateKeyPair();

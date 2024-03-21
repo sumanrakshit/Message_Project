@@ -18,6 +18,10 @@ import java.nio.file.Paths;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.message.project.entity.Message;
 import com.message.project.entity.MessagerRequest;
@@ -31,7 +35,7 @@ import com.google.gson.JsonObject;
 @SpringBootApplication
 public class ProjectApplication implements CommandLineRunner{
 	@Autowired
-	private static MessageService messageService;
+	private MessageService messageService;
 	@Autowired
 	private MessageRepository messageRepository;
 	
@@ -119,7 +123,7 @@ public class ProjectApplication implements CommandLineRunner{
 	                    if (args.length > 2) {
 	                        String fileToAttach = args[2];
 	                        
-	                        String datetime=messageService.dateTime();
+	                        String datetime=dateTime();
 
 	                       
 	                        messagerRequest.setDate(datetime);
@@ -185,7 +189,8 @@ public class ProjectApplication implements CommandLineRunner{
 //	                break;
 	            case "createID":
 	               ///messageService.createId() ;
-	            	String id=arguments[1];
+	            	String id=arguments[0];
+	            	System.out.println("id "+id);
 	            	String pvtkey=messageService.createId(id);
 	                System.out.println("Private key  result= "+pvtkey);
 	            	break;
@@ -195,20 +200,22 @@ public class ProjectApplication implements CommandLineRunner{
 	        }
 		
 	}
+	public String dateTime()
+	{
+		LocalDateTime localDateTime = LocalDateTime.now();
 
-	private void createId() {
-		// TODO Auto-generated method stub
-		
-	}
+        // Convert LocalDateTime to ZonedDateTime
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
 
-	private void listMessages(String[] args) {
-		// TODO Auto-generated method stub
-		
-	}
+        // Define date time formatter
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mmXXX");
 
-	private void postMessage(String[] args) {
-		// TODO Auto-generated method stub
-		
+        // Format the ZonedDateTime object to a string
+        String formattedDate = zonedDateTime.format(formatter);
+        return formattedDate;
 	}
+	
+
+
 
 }

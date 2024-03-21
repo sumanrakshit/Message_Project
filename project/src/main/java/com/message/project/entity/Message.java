@@ -72,25 +72,25 @@ public class Message {
 //		this.attachment = attachment;
 //		this.signature = signature;
 //	}
-	public Message() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+//	public Message() {
+//		super();
+//		// TODO Auto-generated constructor stub
+//	}
 	public int getMessageid() {
 		return messageid;
 	}
 	public void setMessageid(int messageid) {
 		this.messageid = messageid;
 	}
-	public Message(int messageid, String date, String author, String message, String attachment, String signature) {
-		super();
-		this.messageid = messageid;
-		this.date = date;
-		this.author = author;
-		this.message = message;
-		this.attachment = attachment;
-		this.signature = signature;
-	}
+//	public Message(int messageid, String date, String author, String message, String attachment, String signature) {
+//		super();
+//		this.messageid = messageid;
+//		this.date = date;
+//		this.author = author;
+//		this.message = message;
+//		this.attachment = attachment;
+//		this.signature = signature;
+//	}
 	@Override
 	public String toString() {
 		return "Message [messageid=" + messageid + ", date=" + date + ", author=" + author + ", message=" + message

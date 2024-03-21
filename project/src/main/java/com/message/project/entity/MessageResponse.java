@@ -3,15 +3,15 @@ package com.message.project.entity;
 public class MessageResponse {
 	private int  message_id;
 
-	public MessageResponse() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public MessageResponse(int message_id) {
-		super();
-		this.message_id = message_id;
-	}
+//	public MessageResponse() {
+//		super();
+//		// TODO Auto-generated constructor stub
+//	}
+//
+//	public MessageResponse(int message_id) {
+//		super();
+//		this.message_id = message_id;
+//	}
 
 	public int getMessage_id() {
 		return message_id;
