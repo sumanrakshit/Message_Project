@@ -15,6 +15,7 @@ import java.security.SignatureException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -57,7 +58,7 @@ import com.message.project.service.MessageService;
 @Service
 public class MesssageServiceImpl implements MessageService {
 	
-	@Autowired
+
 	private Connection connection;
 	public MesssageServiceImpl() throws SQLException
 	{
@@ -127,6 +128,7 @@ public class MesssageServiceImpl implements MessageService {
 	public List<Message> listMessage(int limit, int next) {
 		// TODO Auto-generated method stub
 		List<Message> messages=messageRepository.findAll();
+		List<Message>result=new ArrayList<Message>();
 		int count = 0;
 		for (int i = messages.size() - 1; i >= 0 && count < limit; i--) {
 			Message message = messages.get(i);
@@ -246,7 +248,7 @@ userResponse.setMessage(str);
 	        properties.setProperty("privateKey", Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded()));
 
 	        try (FileOutputStream fos = new FileOutputStream(fileName)) {
-	            properties.store(fos, "MB configuration");
+	            properties.store(fos, "Private key configuration");
 	        }
 	        // Save public key
 	        try (OutputStream publicKeyOut = new FileOutputStream("public.key")) {
@@ -368,19 +370,43 @@ userResponse.setMessage(str);
 		List<Message> messages=messageRepository.findAll();
 		
 		
-		processMessages(messages, saveAttch);
-		if(startingId==null)
+		
+		if(count<=messages.size())
 		{
+			if(startingId.equals("-1") )
+			{
+				reverseMessages(messages,saveAttch,count);
+			}
+			else
+			{
+				processMessages(messages, saveAttch, startingId,count);
+			}
 			
 		}
+		else
+		{
+			System.out.println("Please enter valid count ");
+		}
+		
 		
 		return messages;
 	}
 	
-	 private void processMessages(List<Message> messages, boolean saveAttch) {
+	 private void processMessages(List<Message> messages, boolean saveAttch, String startingId, int count) {
 //	        JSONArray messages = new JSONArray(responseBody);
+		 int number = Integer.parseInt(startingId);
+		 int last=number+count;
 	        
-	        for (int i = 0; i < messages.size(); i++) {
+	        for (int i = number; i < last; i++) {
+	            Message message = messages.get(i);
+	            saveMessage(message, saveAttch);
+	        }
+	    }
+	 private void reverseMessages(List<Message> messages, boolean saveAttch,int count) {
+//	        JSONArray messages = new JSONArray(responseBody);
+		 int number=messages.size()-count;
+	        
+	        for (int i = messages.size()-1; i >=number ; i--) {
 	            Message message = messages.get(i);
 	            saveMessage(message, saveAttch);
 	        }
@@ -401,7 +427,10 @@ userResponse.setMessage(str);
 	        String author = message.getAuthor();
 	        String date = message.getDate();
 	        String messageText = message.getMessage();
-	        System.out.println(messageId + ": " + date + " " + author + " says \"" + messageText + "\"");
+	        System.out.println(messageId + ": " + date + " " + author + " says \"" + messageText + "\" " + "this message may go multiple lines\n"
+	        		+ "that's okay. make sure to end with a quote. if there is an attachment\n"
+	        		+ "put a\n"
+	        		+ "emoji after the quote and a space.");
 	    }
 	 
 	  private void saveAttachment(int messageId, String attachment) {

@@ -67,25 +67,25 @@ public class ProjectApplication implements CommandLineRunner{
         return "Success";
 	}
 
-	 public static void writeToPDF(JSONObject jsonObject, String filePath) throws IOException {
-	        PDDocument document = new PDDocument();
-	        PDPage page = new PDPage();
-	        document.addPage(page);
-
-	        PDPageContentStream contentStream = new PDPageContentStream(document, page);
-	        contentStream.beginText();
-	        contentStream.setFont(PDType1Font.HELVETICA, 12);
-	        contentStream.newLineAtOffset(50, 700);
-
-	        // Write JSON object to PDF
-	        contentStream.showText(jsonObject.toString());
-
-	        contentStream.endText();
-	        contentStream.close();
-
-	        document.save(new FileOutputStream(new File(filePath)));
-	        document.close();
-	    }
+//	 public static void writeToPDF(JSONObject jsonObject, String filePath) throws IOException {
+////	        PDDocument document = new PDDocument();
+////	        PDPage page = new PDPage();
+////	        document.addPage(page);
+////
+////	        PDPageContentStream contentStream = new PDPageContentStream(document, page);
+////	        contentStream.beginText();
+////	        contentStream.setFont(PDType1Font.HELVETICA, 12);
+////	        contentStream.newLineAtOffset(50, 700);
+////
+////	        // Write JSON object to PDF
+////	        contentStream.showText(jsonObject.toString());
+////
+////	        contentStream.endText();
+////	        contentStream.close();
+////
+////	        document.save(new FileOutputStream(new File(filePath)));
+////	        document.close();
+//	    }
 	@Override
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub
@@ -112,7 +112,7 @@ public class ProjectApplication implements CommandLineRunner{
 	                    if (args.length > 2) {
 	                        String fileToAttach = args[2];
 	                        
-
+                        
 	                       
 	                        messagerRequest.setDate("2024-03-13T19:38-07:00");
 	                        messagerRequest.setAuthor("ben");
