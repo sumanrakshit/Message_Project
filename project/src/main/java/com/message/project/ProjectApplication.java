@@ -44,64 +44,12 @@ public class ProjectApplication implements CommandLineRunner{
 				SpringApplication.run(ProjectApplication.class, args);
         
 	}
-	public String JSONSave(String author,String message,String attachment) {
-		
-		
-		JsonObject jsonObject = new JsonObject();
-		try {
-			jsonObject.addProperty("date",messageService.dateTime());
-	        jsonObject.addProperty("author", author);
-	        jsonObject.addProperty("message", message);
-	        jsonObject.addProperty("attachment", attachment);
-	        jsonObject.addProperty("signature", messageService.signMessage(messageService.dateTime(), author, message, attachment));
-
-	     
-
-		}
-		catch(Exception ex) {
-			System.out.println(ex.getMessage());
-		}
-		// Convert JSON object to string
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(jsonObject);
-
-        
-        
-                // Write JSON string to a file
-        try (FileWriter writer = new FileWriter("output.json")) {
-            writer.write(jsonString);
-            System.out.println("JSON file created successfully.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "Success";
-	}
-
-//	 public static void writeToPDF(JSONObject jsonObject, String filePath) throws IOException {
-////	        PDDocument document = new PDDocument();
-////	        PDPage page = new PDPage();
-////	        document.addPage(page);
-////
-////	        PDPageContentStream contentStream = new PDPageContentStream(document, page);
-////	        contentStream.beginText();
-////	        contentStream.setFont(PDType1Font.HELVETICA, 12);
-////	        contentStream.newLineAtOffset(50, 700);
-////
-////	        // Write JSON object to PDF
-////	        contentStream.showText(jsonObject.toString());
-////
-////	        contentStream.endText();
-////	        contentStream.close();
-////
-////	        document.save(new FileOutputStream(new File(filePath)));
-////	        document.close();
-//	    }
 	@Override
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub
 		
 		 if (args.length == 0) {
-	            System.out.println("Usage: spring-boot-cli <command> [arguments]");
+	            System.out.println("No Usage of springboot cli commands");
 	            return;
 	        }
 
@@ -116,7 +64,8 @@ public class ProjectApplication implements CommandLineRunner{
 	               //messageService.postMessage(null);
 	            	
 	            	
-	                    String message = arguments[1];
+	                    String message = arguments[0];
+	                    System.out.println(message);
 	                    String attachment = null;
 	                    MessagerRequest messagerRequest=new MessagerRequest();
 	                    
@@ -137,6 +86,9 @@ public class ProjectApplication implements CommandLineRunner{
 	 	                            attachment = Base64.getEncoder().encodeToString(fileBytes);
 	 	                           messagerRequest.setAttachment(attachment);
 	 		                        messagerRequest.setSignature(messageService.signMessage(datetime, "ben", message, attachment));
+	 		                       String result=messageService.createMessage(messagerRequest);
+	 			       		        System.out.println("Response ---   "+result);
+	 			            	
 	                            } catch (IOException e) {
 	                                System.err.println("Error reading file: " + e.getMessage());
 	                            }
@@ -144,6 +96,8 @@ public class ProjectApplication implements CommandLineRunner{
 	                        else {
 	                        	messagerRequest.setAttachment("");
 	                        	messagerRequest.setSignature("");
+	                        	 //String result=messageService.createMessage(messagerRequest);
+	 			       		        System.out.println("Response--- Data are not added in database file is not given");
 	                        }
 	                        
 	                        
@@ -151,9 +105,7 @@ public class ProjectApplication implements CommandLineRunner{
 	                        
 	                    }
 	                 
-	       		        String result=messageService.createMessage(messagerRequest);
-	       		        System.out.println("Response ---   "+result);
-	            	
+	       		        
 	            	
 	                break;
 	                
@@ -177,20 +129,15 @@ public class ProjectApplication implements CommandLineRunner{
 	                }
 	            	
 	            	
-	             messageService.allMessage( startingId, count, saveAttachment);
+	                messageService.allMessage( startingId, count, saveAttachment);
 	            	
 	            	
 	                 break;
 	            	
-	            	
-	            	
-	            	
-//	                listMessages(args);
-//	                break;
 	            case "createID":
 	               ///messageService.createId() ;
 	            	String id=arguments[0];
-	            	System.out.println("id "+id);
+	            	//System.out.println("id "+id);
 	            	String pvtkey=messageService.createId(id);
 	                System.out.println("Private key  result= "+pvtkey);
 	            	break;

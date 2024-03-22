@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RestController
@@ -22,9 +23,9 @@ public class MessageController {
     private MessageService messageService;
 
     @GetMapping("/listmessage")
-    public ResponseEntity<?> listMessages(@RequestParam(defaultValue = "10") int limit,
+    public ResponseEntity<?> messagefecthlist(@RequestParam(defaultValue = "10") int limit,
                                           @RequestParam(defaultValue = "-1") int next) {
-        List<Message> messages = messageService.listMessage(limit, next);
+        List<Message> messages = messageService.messagefecthlist(limit, next);
         ErrorResponse errorResponse=new ErrorResponse();
         errorResponse.setError("signature didn't match");
         if (limit > 20) {
@@ -37,10 +38,10 @@ public class MessageController {
     }
 
     @GetMapping("/postmessage")
-    public ResponseEntity<?> postMessage(@RequestBody MessagerRequest messagerRequest)
+    public ResponseEntity<?> messagepostgetid(@RequestBody MessagerRequest messagerRequest)
     {
         //messageService.postMessage(messagerRequest);
-        return  new ResponseEntity<>( messageService.postMessage(messagerRequest),HttpStatus.CREATED);
+        return  new ResponseEntity<>( messageService.messagepostgetid(messagerRequest),HttpStatus.CREATED);
 
     }
     
@@ -57,8 +58,19 @@ public class MessageController {
     public ResponseEntity<?> getKey(@PathVariable String username)
     {
     	System.out.println("Hello world");
-    	String res=messageService.generateKey(username);
+    	String res=messageService.keygenerateusername(username);
     	return new ResponseEntity<>(res,HttpStatus.ACCEPTED);
+    }
+    
+    @GetMapping("/getkey")
+    public ResponseEntity<?> getpublickey(){
+    	try {
+			return new ResponseEntity<>(messageService.createpublicKey(),HttpStatus.OK);
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+		}
     }
 
 
